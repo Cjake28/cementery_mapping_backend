@@ -1,15 +1,15 @@
-// import bcrypt from 'bcrypt';
-// import mysql from 'mysql2';
-// import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
 
-// dotenv.config();
+dotenv.config();
 
-// const password = 'password123'
+const password = 'password123'
 
-// // console.log('Environment variables:', process.env.MYSQL_USER, process.env.MYSQL_PASSWORD);
-// const encryptedPassword = await bcrypt.hash(password,10);
+// console.log('Environment variables:', process.env.MYSQL_USER, process.env.MYSQL_PASSWORD);
+const encryptedPassword = await bcrypt.hash(password,10);
 
-// console.log(encryptedPassword);
+console.log(encryptedPassword);
 
 // const pool = mysql.createPool({
 //     host: process.env.MYSQL_HOST,
