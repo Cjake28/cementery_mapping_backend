@@ -33,7 +33,7 @@ export const verifyEmail = async (req, res) => {
         await resetVerificationCodeAndExpiry(EmailLower);
 
         // Generate a JWT token and set it as a cookie
-        const userPayload = { email: EmailLower };  // Use additional fields like userId if necessary
+        const userPayload = { email: EmailLower };  
         generateTokenAndSetCookie(res, userPayload);
 
         // Respond with success message
