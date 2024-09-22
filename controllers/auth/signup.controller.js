@@ -1,4 +1,4 @@
-import { queryEmail_and_verified, createUser, checkEmailVerificationExpiredAt, updateVerificationCode_And_expirery } from '../../models/authModel/signup.model.js';
+import { queryEmail_and_verified, createUser, deleteUserNotVerified} from '../../models/authModel/signup.model.js';
 import bcrypt from 'bcrypt';
 import {generateTokenAndSetCookie} from '../../utils/generateTokenAndSetCookie.js'
 import {Send_signup_email_verification} from '../../nodemailer/signup.email.js'
@@ -10,7 +10,7 @@ export const signup = async (req, res) => {
 
     try {
         // Check if all required fields are filled
-        if (!EmailLower || !password || !name) {
+        if (!EmailLower || !password || !name){
             return res.status(400).json({ message: "Complete the fields" });
         }
 
@@ -23,24 +23,14 @@ export const signup = async (req, res) => {
             return res.status(400).json({ success: false, message: "User already exists and is verified." });
         }
 
-        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-        const verificationCodeExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
-
-        if (userExists && !isVerified) {
+        if (userExists && !isVerified){
             // Update verification code and its expiration first
-            await updateVerificationCode_And_expirery(EmailLower, verificationCode, verificationCodeExpiresAt);
-
-            try {
-                // Send verification email after updating the code
-                const emailsend = await Send_signup_email_verification(EmailLower, verificationCode);
-                console.log(emailsend.response);
-                return res.status(200).json({ success: true, message: "Verification code resent to your email." });
-            } catch (error) {
-                console.error('Error sending email:', error);
-                return res.status(500).json({ success: false, message: "Failed to resend verification email. Please try again." });
-            }
+            const deletedUser = await deleteUserNotVerified(EmailLower);
+            console.log("deletedUser: ",deletedUser);
         }
 
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const verificationCodeExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
         const encryptedPassword = await bcrypt.hash(password, 10);
 
         try {
@@ -53,7 +43,7 @@ export const signup = async (req, res) => {
         }
 
         // Create new user in the database
-        await createUser(name, EmailLower, encryptedPassword, verificationCode, verificationCodeExpiresAt, role);
+        await createUser(name, EmailLower, encryptedPassword, verificationCode, verificationCodeExpiresAt);
 
         return res.status(201).json({ success: true, message: "User created successfully" });
     } catch (e) {

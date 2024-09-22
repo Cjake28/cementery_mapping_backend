@@ -10,7 +10,7 @@ export async function queryEmail_and_verified(email) {
         return result;
     } catch (error) {
         console.error('Error querying email:', error);
-        throw new Error('Database query failed');
+        throw new Error('signupModel, queryEmail_and_verified: Database update failed')
     }
 }
 
@@ -28,7 +28,7 @@ export async function createUser(name, email, password, verificationToken, verif
         return result.insertId;
     } catch (error) {
         console.error('Error creating user:', error);
-        throw new Error('Database insert failed');
+        throw new Error('signupModel, createUser: Database update failed')
     }
 }
 
@@ -43,7 +43,7 @@ export async function checkEmailVerificationExpiredAt(email) {
         return expiration ? new Date(expiration) < new Date() : false;
     } catch (error) {
         console.error('Error checking verification code expiration:', error);
-        throw new Error('Database query failed');
+        throw new Error('signupModel, checkEmailVerificationExpiredAt: Database update failed')
     }
 }
 
@@ -59,6 +59,20 @@ export async function updateVerificationCode_And_expirery(email, verificationCod
         return result;
     } catch (error) {
         console.error('Error updating verification code:', error);
-        throw new Error('Database update failed');
+        throw new Error('signupModel, updateVerificationCode_And_expirery: Database update failed')
     }
+}
+
+export async function deleteUserNotVerified(email){
+    try{
+        const [result] = await db.query(`
+            DELETE FROM users WHERE email=?;
+        `,[email]);
+        console.log(result);
+        return result;
+    }catch(error){
+        console.error('Error deleteUserNotVerified', error);
+        throw new Error('signupModel, deleteUserNotVerified: Database update failed')
+    }
+    
 }
