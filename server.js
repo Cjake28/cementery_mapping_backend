@@ -1,5 +1,11 @@
-import {app} from './app.js';
+import { app } from './app.js';
+import initTables from './schema/index.js';
 
-app.listen('9220', ()=>{
-    console.log('listening on port 9220');
-})
+
+initTables().then(() => {
+  app.listen(9220, () => {
+    console.log('Server listening on port 9220');
+  });
+}).catch(err => {
+  console.error('Failed to create tables', err);
+});
