@@ -36,9 +36,24 @@ export async function resetVerificationCodeAndExpiry(email) {
             SET verificationCode = NULL, verificationCodeExpiresAt = NULL
             WHERE email = ?
         `, [email]);
+        console.log(result);
         return result;
     } catch (error) {
         console.error('Error resetting verification code and expiry:', error);
         throw new Error('verifyEmail: Database query failed');
     }
+}
+
+export async function getUserIDbyEmail(email){
+    try{
+        const [result] = await db.query(`
+           SELECT id FROM users WHERE email = ?
+        `,[email]);
+        console.log(result);
+        return result;
+    }catch(error){
+        console.error('Error getUserIDbyEmail', error);
+        throw new Error('signupModel, getUserIDbyEmail: Database update failed')
+    }
+    
 }

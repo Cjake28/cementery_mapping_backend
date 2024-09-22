@@ -4,7 +4,7 @@ import {VERIFICATION_EMAIL_TEMPLATE} from './templates.email.js'
 export async function Send_signup_email_verification(email, verificatinCode){
     try{
     const sendEmail = await transporter.sendMail({
-        from: '"Your Name" <supnetcjs@gmail.com>',
+        from: `"Your Name" <${process.env.nodemailerEmail}>`,
         to: email,
         subject:'Email Verification',
         html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", verificatinCode),

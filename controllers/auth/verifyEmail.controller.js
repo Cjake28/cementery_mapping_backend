@@ -1,4 +1,4 @@
-import { qryVerCode_and_expiresAt, verified_a_user, resetVerificationCodeAndExpiry } from '../../models/authModel/verifyEmail.model.js';
+import { qryVerCode_and_expiresAt, verified_a_user, resetVerificationCodeAndExpiry,getUserIDbyEmail } from '../../models/authModel/verifyEmail.model.js';
 import { generateTokenAndSetCookie } from '../../utils/generateTokenAndSetCookie.js';
 
 export const verifyEmail = async (req, res) => {
@@ -31,9 +31,9 @@ export const verifyEmail = async (req, res) => {
 
         // Reset the verification code and its expiration
         await resetVerificationCodeAndExpiry(EmailLower);
-
+        const userId = await getUserIDbyEmail(EmailLower);
         // Generate a JWT token and set it as a cookie
-        const userPayload = { email: EmailLower };  // Use additional fields like userId if necessary
+        const userPayload = { email: EmailLower, userId: userId, role};
         generateTokenAndSetCookie(res, userPayload);
 
         // Respond with success message

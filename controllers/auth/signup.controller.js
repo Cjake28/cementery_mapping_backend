@@ -1,6 +1,5 @@
 import { queryEmail_and_verified, createUser, deleteUserNotVerified} from '../../models/authModel/signup.model.js';
 import bcrypt from 'bcrypt';
-import {generateTokenAndSetCookie} from '../../utils/generateTokenAndSetCookie.js'
 import {Send_signup_email_verification} from '../../nodemailer/signup.email.js'
 
 
@@ -57,6 +56,3 @@ export const signin = async (req, res) => {
     res.send("signin");
 }
 
-export const logout = async (req, res) => {
-    res.send("logout");
-}
