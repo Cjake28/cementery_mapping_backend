@@ -1,7 +1,8 @@
-import { queryEmail_and_verified, createUser, checkEmailVerificationExpiredAt, updateVerificationCode_And_expirery } from '../models/authModel/signup.model.js';
+import { queryEmail_and_verified, createUser, checkEmailVerificationExpiredAt, updateVerificationCode_And_expirery } from '../../models/authModel/signup.model.js';
 import bcrypt from 'bcrypt';
-import {generateTokenAndSetCookie} from '../utils/generateTokenAndSetCookie.js'
-import {Send_signup_email_verification} from '../nodemailer/signup.email.js'
+import {generateTokenAndSetCookie} from '../../utils/generateTokenAndSetCookie.js'
+import {Send_signup_email_verification} from '../../nodemailer/signup.email.js'
+
 
 export const signup = async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -61,12 +62,7 @@ export const signup = async (req, res) => {
     }
 };
 
-export const verifyEmail = async(req,res)=>{
-    const {email, code} = req.body;
 
-    
-
-}
 export const signin = async (req, res) => {
     res.send("signin");
 }
