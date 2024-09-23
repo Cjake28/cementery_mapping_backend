@@ -12,7 +12,9 @@ export const signup = async (req, res) => {
         if (!EmailLower || !password || !name){
             return res.status(400).json({ message: "Complete the fields" });
         }
-
+        
+        // todo: check this function might cause problem
+        //check if undef
         // Check if the user already exists
         const existingUser = await queryEmail_and_verified(EmailLower);
         const userExists = existingUser && existingUser.length > 0;
@@ -52,7 +54,5 @@ export const signup = async (req, res) => {
 };
 
 
-export const signin = async (req, res) => {
-    res.send("signin");
-}
+
 
